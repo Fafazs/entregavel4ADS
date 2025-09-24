@@ -1,31 +1,36 @@
 //Questão 6
 //Dado um conjunto de dados, retorne os valores inteiros entre o primeiro elemento, e o valor N.
 
+const pattern = [{
+        0: "\[\s*([0-9]+|\"[^\"]*\")(\s*,\s*([0-9]+|\"[^\"]*\"))*\s*\]",
+        1: "\d+"
+    }];
+
 function contarValoresInteiros(dataset, N) {
     let limite;
-    if (N > dataset.length) {
-        limite = dataset.length;
-    } else if (N < 1) {
+
+    const data  = dataset.map(Number);
+    const int = Number(N);
+
+    if (int > data.length) {
+        limite = data.length;
+    } else if (int < 1) {
         return 0;
     } else {
-        limite = N;
+        limite = int;
     }
     
-    const inicio = dataset[0];
+    const inicio = data[0];
     let count = 0;
-    for (let i = 0; i < dataset.length; i++) {
-        const valor = dataset[i];
+    for (let i = 0; i < data.length; i++) {
+        const valor = data[i];
         if (Number.isInteger(valor) && valor >= inicio && valor <= limite) {
             count++;
         }
     }
 
     return count;
+    
 }
 
-const dados = [2, 3.5, 4, 5, 6, "texto", 7, 8.2, 9, 10, 20, 30, "text", "ola", 33.3, 100,22,55,66,77,88];
-
-console.log(contarValoresInteiros(dados, 20));
-console.log(contarValoresInteiros(dados, 6));  
-console.log(contarValoresInteiros(dados, 10));  
-console.log(contarValoresInteiros(dados, 0));  
+module.exports = {contarValoresInteiros, pattern};

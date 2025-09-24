@@ -14,8 +14,8 @@ const javaRoutes = require('./get/java');
 const javascriptRoutes = require('./get/javascript');
 
 // Usando as rotas
-app.use('/algoritmos/java', javaRoutes);
-app.use('/algoritmos/javascript', javascriptRoutes);
+app.use('/java', javaRoutes);
+app.use('/javascript', javascriptRoutes);
 
 // Rota raiz
 app.get('/', (req, res) => {
