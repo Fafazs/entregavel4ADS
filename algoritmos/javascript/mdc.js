@@ -1,8 +1,8 @@
 //Questão 4
 //Maximo divisor comum
  const pattern = [{
-        0: "\d+",
-        1: "\d+"
+        0: "\\d+",
+        1: "\\d+"
     }]
 
 function mdc(a, b) {

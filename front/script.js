@@ -24,7 +24,6 @@ async function fetchJavascript() {
     try {
         const response = await fetch('http://localhost:3000/javascript');
         const data = await response.json(); // Assumindo que o servidor retorna JSON
-        console.log(data);
 
         // Adiciona o título e os formulários para cada função
         const h2 = document.createElement('h2');
@@ -65,17 +64,17 @@ async function fetchJavascript() {
 
                         // Cria placeholder informativo baseado no pattern
                         if (input.pattern === "\\d+") {
-                            input.placeholder = `Número inteiro parâmetro ${i + 1})`;
+                            input.placeholder = `Número inteiro`;
                         }
                         else if(input.pattern === "\[\s*\d+(\s*,\s*\d+)*\s*\]"){
-                            input.placeholder = `Array numeros, [1,2,3...] (parâmetro ${i + 1})`;
+                            input.placeholder = `Array numeros, [1,2,3...]`;
                         }
 
                         else if (input.pattern === "[s*[0-9]+(s*,s*[0-9]+)*s*]") {
-                            input.placeholder = `Arrray de inteiros,[1,2,3...], (parâmetro ${i + 1})`;
+                            input.placeholder = `Arrray de inteiros,[1,2,3...],`;
                         }
                         else if(input.pattern === "\[\s*([0-9]+|\"[^\"]*\")(\s*,\s*([0-9]+|\"[^\"]*\"))*\s*\]"){
-                            input.placeholder = `Array generico, [1,2,3...] (parâmetro ${i + 1})`;
+                            input.placeholder = `Array generico, [1,2,3...]`;
                         }
                     } else {
                         input.placeholder = `Parâmetro ${i + 1}`;
@@ -125,10 +124,17 @@ async function submitForm(nome, form) {
         const resultado = await response.json();
         const div = document.createElement('div');
         div.textContent = JSON.stringify(resultado.resultado);
-        //
-        form.appendChild(div);
+        div.classList.add('responseDiv');
+        // Inserir como segundo filho
+        if (form.children.length >= 2) {
+            form.insertBefore(div, form.children[1]);
+        } else {
+            form.appendChild(div); // fallback se não houver segundo filho
+        }
+
         console.log(resultado);
         return resultado;
+
 
     } catch (error) {
         console.error('Erro ao enviar dados:', error);
@@ -138,6 +144,5 @@ async function submitForm(nome, form) {
 
 // Chamar a função quando a página carregar
 document.addEventListener("DOMContentLoaded", () => {
-    fetchJava();
     fetchJavascript();
 });
