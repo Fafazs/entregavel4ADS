@@ -26,6 +26,7 @@ router.get('/', (req, res) => {
 
 //posts
 
+
 router.post('/contagemInt', (req, res) => {
 
     const body = req.body;
@@ -37,10 +38,18 @@ router.post('/contagemInt', (req, res) => {
     }
     //numero de dentro do array que é o limite
     const N = Number(body.param2);
+ 
     
     //resposta
+    const resultado = exercicios.contagemInt.contarValoresInteiros(dataSet, N);
+
     if(arr || N){
-    res.status(200).json({ resultado: `Existem ${exercicios.contagemInt.contarValoresInteiros(arr, N)} números inteiros entre oarray [${arr.toString()}] e o número ${N}`});
+        res.status(200).json({
+            resultado: `Considerando entre o primeiro elemento e o elemento ${N} selecionado.
+            Existem: ${resultado.quantidade} inteiros!
+            Inteiros encontrados: ${resultado.valores}`
+        });
+
     } else {
         res.status(400).json({ erro: "Parâmetros inválidos. Certifique-se de enviar 'param1' como array de números e 'param2' como número." });
     }
