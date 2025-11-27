@@ -1,40 +1,43 @@
 //Questão 6
-//Dado um conjunto de dados, retorne os valores inteiros entre o primeiro elemento, e o valor N.
+//Dado um conjunto de dados, retorne os valores inteiros entre o primeiro elemento, e o valor N excluindo-o do intervalo.
 
 const pattern = [{
-        0: "\[\s*([0-9]+|\"[^\"]*\")(\s*,\s*([0-9]+|\"[^\"]*\"))*\s*\]",
-        1: "\\d+"
-    }];
+    0: "\[\s*([0-9]+|\"[^\"]*\")(\s*,\s*([0-9]+|\"[^\"]*\"))*\s*\]",  // Regex para array de números
+    1: "\\d+"  // Regex para encontrar números inteiros
+}];
 
-    function contarValoresInteiros(dataset, N) {
-        // Converter tudo para número
-        const data = dataset.map(Number);
-    
-        // Validar se N existe dentro do array original
-        if (!dataset.some(v => Number(v) === Number(N))) {
-            throw new Error("O valor N deve existir dentro do array.");
+function contarValoresInteiros(dataset, N) {
+    // Converter todos os valores para números, mas preservar o tipo original (string ou número)
+    const data = dataset.map(item => {
+        if (typeof item === "string") {
+            // Verificar se o item é um número representado como string
+            return isNaN(Number(item)) ? item : Number(item);
         }
-    
-        const inicio = data[0];     // primeiro elemento
-        const fim = Number(N);      // valor N informado
-    
-        // Criar intervalo adequado
-        const menor = Math.min(inicio, fim);
-        const maior = Math.max(inicio, fim);
-    
-        // Filtrar apenas INTEIROS ENTRANDO NO INTERVALO,
-        // MAS EXCLUINDO explicitamente o valor N
-        const inteiros = data.filter(v =>
-            Number.isInteger(v) && 
-            v >= menor &&
-            v <= maior &&
-            v !== fim   // ← EXCLUSÃO DO N
-        );
-    
-        return {
-            valores: inteiros,
-            quantidade: inteiros.length
-        };
+        return item;
+    });
+
+    // Validar se N existe dentro do array original
+    const indexN = data.findIndex(v => v == N);
+    if (indexN === -1) {
+        throw new Error("O valor N deve existir dentro do array.");
     }
-    
-    module.exports = { contarValoresInteiros, pattern };
+
+    // Pegar o primeiro valor do array
+    const inicio = data[0];
+
+    // Pegar os valores entre o índice 0 e o índice onde N está
+    const intervalo = data.slice(0, indexN); // Pega os valores do início até o valor N (sem incluir o N)
+
+    // Filtrar os inteiros dentro desse intervalo
+    const inteiros = intervalo.filter(v => Number.isInteger(v) && v !== N); // Exclui N
+
+    // Retornar os valores encontrados e a quantidade de inteiros
+    return {
+        valores: inteiros,
+        quantidade: inteiros.length
+    };
+}
+
+
+
+module.exports = { contarValoresInteiros, pattern };
